@@ -11,20 +11,24 @@ RUN addgroup -S nginx \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN mkdir -p /run/nginx
-
 ADD config/supervisord.conf /etc/supervisord.conf
 
 # Copy our nginx config
 RUN rm -Rf /etc/nginx/nginx.conf
+
 ADD config/nginx.conf /etc/nginx/nginx.conf
 
 # nginx site conf
-RUN mkdir -p /etc/nginx/sites-available/ && \
+RUN mkdir -p /app/public && \
+    mkdir -p /etc/nginx/sites-available/ && \
     mkdir -p /etc/nginx/sites-enabled/ && \
-    mkdir -p /etc/nginx/ssl/ && \
-    rm -Rf /var/www/* && \
-    mkdir -p /app/public
+    mkdir -p /run/nginx && \
+    chmod -R 777 /run/nginx && \
+    chmod -R 777 /var/lib/nginx/logs && \
+    chmod -R 777 /usr/local/var/log && \
+    chmod -R 777 /var/tmp/nginx/ && \
+    rm -Rf /var/www/*
+
 ADD config/nginx-site.conf /etc/nginx/sites-enabled/default.conf
 
 # Add Scripts
