@@ -35,6 +35,5 @@ EXPOSE 8080
 
 WORKDIR "/app"
 
-# ENTRYPOINT [ "bash", '-c', '/start.sh' ]
 ENTRYPOINT []
 CMD ["/start.sh"]
